@@ -36,6 +36,7 @@
         Number of seats: <%= select_tag(:seats, options_for_select((1..4).map { |i| [i,i] }), prompt: 'Select', required: 'true') %>
       </p>
       <%= f.submit 'Next' %>
+      <%# I tried to make the seats appear for each flight result, but only the last seat form would submit the values, so I had to make a single seats dropdown %>
     <% else %>
       <p>No flights available</p>
     <% end %>
