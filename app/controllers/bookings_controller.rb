@@ -2,8 +2,8 @@ class BookingsController < ApplicationController
   
   def new
     @booking = Booking.new
-    #(params[:seats].to_i).times {@booking.passengers.build} #booking.passengers.build builds the passengers instantiated with the booking_id that you are creating now(but it was not yet created). This way the passenger that you create will inherit the booking_id from the booking that you are creating with the form 
-    @booking.passengers.build
+    #(params[:seats].to_i).times {@booking.passengers.build} 
+    @booking.passengers.build #booking.passengers.build builds the passengers instantiated with the booking_id that you are creating now(but it was not yet created). This way the passenger that you create will inherit the booking_id from the booking that you are creating with the form 
     @flight = Flight.find_by(id: params[:flight_id])
     @seats = params[:seats].to_i
   end
