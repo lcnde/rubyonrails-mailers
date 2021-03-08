@@ -1,0 +1,26 @@
+<h1>Success!</h1>
+<h2>You booked your flight</h2>
+<p>
+  From: <%= @booking.flight.departure_airport.code %> |
+  To: <%= @booking.flight.destination_airport.code %> |
+  Flight duration: <%= @booking.flight.flight_duration %> min |
+  Date: <%= @booking.flight.date.to_date %>
+</p>
+
+<h2>Billing and email</h2>
+<p>
+  Email: <%= @booking.email %> |
+  Billing: <%= @booking.billing %>
+</p>
+
+<% @booking.passengers.each do |f| %>
+  <% (@booking.passengers.count).times do |i| %>
+    <h2>Passenger <%= i+1 %></h2>
+    <p>
+      Name: <%= f.name %> |
+      Surname: <%= f.surname %>
+    </p>
+  <% end %>
+<% end %>
+
+<%= link_to 'Homepage', flights_path %>

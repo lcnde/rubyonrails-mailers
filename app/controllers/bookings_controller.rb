@@ -12,11 +12,15 @@ class BookingsController < ApplicationController
     @flight = Flight.find_by(id: params[:flight_id])
     @seats = params[:seats].to_i
     if @booking.save
-      redirect_to flights_path
+      redirect_to @booking
     else
       flash.now[:alert] = "Something went wrong"
       render :new
     end
+  end
+
+  def show
+    @booking = Booking.find_by(id: params[:id])
   end
 
   private
