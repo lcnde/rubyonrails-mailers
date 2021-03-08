@@ -1,6 +1,4 @@
 <h1>Fill the information for your flight</h1>
-<% @flight = Flight.find_by(id: params[:flight_id]) %>
-<% @seats = params[:seats].to_i %>
 <p>
   From: <%= @flight.departure_airport.code %> | 
   To: <%= @flight.destination_airport.code %> | 
@@ -20,8 +18,18 @@
   <%= f.text_field :email %> |
   <%= f.label :billing, 'Billing: ' %>
   <%= f.number_field :billing %>
+  <%= f.hidden_field :flight_id, :value => params[:flight_id] %>
   <%= hidden_field_tag('flight_id', params[:flight_id]) %>
   <%= hidden_field_tag('seats', params[:seats]) %>
+  <% @seats.times do |i| %>
+    <h2>Passenger <%= i+1 %></h2>
+    <%= f.fields_for :passengers do |passenger_attributes| %>
+      <%= passenger_attributes.label :name, 'Name: ' %>
+      <%= passenger_attributes.text_field :name %>
+      <%= passenger_attributes.label :surname, 'Surname: ' %>
+      <%= passenger_attributes.text_field :surname %>
+    <% end %>
+  <% end %>
   <br><br><br>
   <%= f.submit %>
 <% end %>
