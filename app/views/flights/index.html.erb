@@ -1,2 +1,43 @@
-<h1>Flights#index</h1>
-<p>Find me in app/views/flights/index.html.erb</p>
+<h1>Homepage</h1>
+<h2>Search your flight</h2>
+<p>Leave date field empty if you want to see all flights to your destinations</p>
+
+<% flash.each do |type, msg| %>
+  <div style="color:red">
+    <%= msg %>
+  </div>  
+  <br>
+<% end %>
+
+<%= form_with(url: "/flights", method: "get", local: true) do |f| %>
+  <p>
+    Departure: <%= f.select(:departure_airport_id, @airport_options, selected: params[:departure_airport_id], prompt: 'From?') %> | <%#The 'selected' keeps the choice of the user inside the form after he presses the search button. without 'selected' the dropdown menu would reset to default values%>
+    Destination: <%= f.select(:destination_airport_id, @airport_options, selected: params[:destination_airport_id], prompt: 'To?') %> | 
+    Date: <%= f.date_field(:date, value: params[:date]) %><%#In this case 'value' is the equivalent of 'selected' in the other dropdowns%>
+    <%= f.submit('Search flights') %>
+  </p>
+<% end %>
+<br>
+
+<%= form_with(url: 'bookings/new', method: 'get') do |f| %>
+  <% if @available_flights %><%# This line of code prevents @available.flights.where to execute. When you load the page for the first time, @available_flights will not have any params, so it will be a nil class, which gives back an error. This line of code prevents the rest of the code to execute before the user inputs the params. It basically prevents the code to run until @available_flights returns true in the 'if' condition %>
+    <% if @available_flights.where("date > ?", Time.now).any? %><%#the .where("date > ?", Time.now).any? indexes only the future flights, avoids all the past flights that will still be conserved in the database%>
+      <h2>Available flights</h2>
+      <% @available_flights.order('date').each do |flight| %>
+        <p>
+          <%= radio_button_tag(:flight_id, flight.id, required: true) %>
+          From: <%= flight.departure_airport.code %> | 
+          To: <%= flight.destination_airport.code %> | 
+          Flight duration: <%= flight.flight_duration %> min | 
+          Date: <%= flight.date.to_date %>
+        </p>
+      <% end %>
+      <p>
+        Number of seats: <%= select_tag(:seats, options_for_select((1..4).map { |i| [i,i] }), prompt: 'Select', required: 'true') %>
+      </p>
+      <%= f.submit 'Next' %>
+    <% else %>
+      <p>No flights available</p>
+    <% end %>
+  <% end %>
+<% end %>
