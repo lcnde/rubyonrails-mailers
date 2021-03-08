@@ -13,14 +13,12 @@
   Billing: <%= @booking.billing %>
 </p>
 
-<% @booking.passengers.each do |f| %>
-  <% (@booking.passengers.count).times do |i| %>
-    <h2>Passenger <%= i+1 %></h2>
+<% @booking.passengers.each_with_index do |f, index| %>
+    <h2>Passenger <%= index+1 %></h2>
     <p>
       Name: <%= f.name %> |
       Surname: <%= f.surname %>
     </p>
-  <% end %>
 <% end %>
 
 <%= link_to 'Homepage', flights_path %>
