@@ -1,5 +1,8 @@
 # README
 
+I used my old project of flight booking and added mailers to it
+
+
 This is a website for flights booking. 
 In the root path you can search and select flights.
 The website will show only the future flights available, the past ones are still in the database but the user can't access them.
